@@ -1,14 +1,16 @@
 <title>Real Random number Using ANU QRNG API</title>
 <script>
-const API_URL = 'https://quantumnumbers.anu.edu.au/api-key';
+const API_URL = 'https://qrng.anu.edu.au/API/jsonI.php';
 const API_KEY = 'FREE_qrng-key_1777367875';
 
 async function getQuantumNumbers() {
-    const response = await fetch(`${API_URL}?length=10&type=uint8`, {
-        headers: { 'x-api-key': API_KEY }
-    });
+    const response = await fetch(`${API_URL}?length=10&type=uint8`);
     const data = await response.json();
-    document.write(data.data); // Array of random numbers
+    document.getElementById("output").textContent = data.data.join(', ');
 }
+
+// 페이지 로드시 실행
+getQuantumNumbers();
+
 </script>
 <input type="button" value="랜덤 숫자 다시 뽑기"  onclick="location.reload()">
