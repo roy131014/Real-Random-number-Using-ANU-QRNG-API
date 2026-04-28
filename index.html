@@ -2,36 +2,34 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>QRNG 테스트</title>
+<title>Quantum Random</title>
 </head>
+
 <body>
 
 <h3>양자 난수:</h3>
 <div id="output">불러오는 중...</div>
 <br>
-<button onclick="getQuantumNumbers()">다시 뽑기</button>
+<button onclick="get()">다시 뽑기</button>
 
 <script>
-const API_URL = 'https://test.changhyun2013.workers.dev/';
+const API_URL = "https://your-worker-name.your-subdomain.workers.dev";
 
-async function getQuantumNumbers() {
+async function get() {
     try {
-        const response = await fetch(`${API_URL}?length=10&type=uint8`);
-
-        if (!response.ok) throw new Error("요청 실패");
-
-        const data = await response.json();
+        const res = await fetch(API_URL);
+        const data = await res.json();
 
         document.getElementById("output").textContent =
             data.data.join(', ');
 
     } catch (e) {
         document.getElementById("output").textContent =
-            "로딩 실패 (CORS 또는 서버 문제)";
+            "로딩 실패";
     }
 }
 
-getQuantumNumbers();
+get();
 </script>
 
 </body>
