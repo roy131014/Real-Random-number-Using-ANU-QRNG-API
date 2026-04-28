@@ -1,16 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
 <title>Real Random number Using ANU QRNG API</title>
+</head>
+
+<body>
+
+<h3>양자 난수 결과:</h3>
+<div id="output">불러오는 중...</div>
+
+<br>
+
+<input type="button" value="랜덤 숫자 다시 뽑기" onclick="getQuantumNumbers()">
+
 <script>
 const API_URL = 'https://qrng.anu.edu.au/API/jsonI.php';
 const API_KEY = 'FREE_qrng-key_1777367875';
 
 async function getQuantumNumbers() {
-    const response = await fetch(`${API_URL}?length=10&type=uint8`);
-    const data = await response.json();
-    document.getElementById("output").textContent = data.data.join(', ');
+    try {
+        const response = await fetch(`${API_URL}?length=10&type=uint8`, {
+            headers: {
+                'x-api-key': API_KEY
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("API 요청 실패");
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error("API 응답 오류");
+        }
+
+        document.getElementById("output").textContent =
+            data.data.join(', ');
+
+    } catch (error) {
+        document.getElementById("output").textContent =
+            "오류 발생: " + error.message;
+    }
 }
 
 // 페이지 로드시 실행
 getQuantumNumbers();
-
 </script>
-<input type="button" value="랜덤 숫자 다시 뽑기"  onclick="location.reload()">
+
+</body>
+</html>
