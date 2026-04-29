@@ -13,19 +13,31 @@
 <button onclick="get()">다시 뽑기</button>
 
 <script>
-const API_URL = "test.changhyun2013.workers.dev";
+const API_URL = "https://test.changhyun2013.workers.dev";
 
 async function get() {
     try {
         const res = await fetch(API_URL);
+
+        if (!res.ok) {
+            throw new Error("네트워크 오류");
+        }
+
         const data = await res.json();
 
-        document.getElementById("output").textContent =
-            data.data.join(', ');
+        // data.data가 배열인지 확인
+        if (data && Array.isArray(data.data)) {
+            document.getElementById("output").textContent =
+                data.data.join(', ');
+        } else {
+            document.getElementById("output").textContent =
+                "데이터 형식 오류";
+        }
 
     } catch (e) {
         document.getElementById("output").textContent =
             "로딩 실패";
+        console.error(e);
     }
 }
 
